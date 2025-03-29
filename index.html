@@ -3,83 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Pathway Diagnosis</title>
+    <title>Learning Path Diagnosis</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; }
-        .hidden { display: none; }
-        button { margin-top: 10px; padding: 10px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        .question { margin-bottom: 10px; }
+        .result { margin-top: 20px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <h2>Find Your Best Learning Path! 🚀</h2>
+    <h2>Find Your Learning Path! 🚀</h2>
 
-    <div id="questionnaire">
-        <p><strong>1. What kind of topics excite you the most?</strong></p>
-        <select id="q1">
-            <option value="A">Data & Analytics</option>
-            <option value="B">Leadership & Influence</option>
-            <option value="C">Creativity & Innovation</option>
-            <option value="D">Execution & Operations</option>
-            <option value="E">Global Thinking & Networking</option>
-        </select>
-
-        <p><strong>2. How do you prefer to learn?</strong></p>
-        <select id="q2">
-            <option value="A">Structured research (books, case studies)</option>
-            <option value="B">Watching videos & expert talks</option>
-            <option value="C">Discussions & interactive workshops</option>
-            <option value="D">Hands-on experience & real projects</option>
-            <option value="E">Observing trends & real-world exposure</option>
-        </select>
-
-        <p><strong>3. How do you want to be seen in the future?</strong></p>
-        <select id="q3">
-            <option value="A">A thought leader in data & tech</option>
-            <option value="B">An inspiring leader & decision-maker</option>
-            <option value="C">A creative innovator</option>
-            <option value="D">A master of execution</option>
-            <option value="E">A global connector & strategist</option>
-        </select>
-
-        <button onclick="showResults()">See My Learning Path</button>
+    <!-- Question 1 -->
+    <div class="question">
+        <h3>Q1: What topic interests you the most?</h3>
+        <label><input type="radio" name="q1" value="A"> Data Science</label>
+        <label><input type="radio" name="q1" value="B"> Leadership</label>
+        <label><input type="radio" name="q1" value="C"> Creativity</label>
+        <label><input type="radio" name="q1" value="D"> Project Management</label>
+        <label><input type="radio" name="q1" value="E"> Global Strategy</label>
     </div>
 
-    <div id="result" class="hidden">
-        <h3>Your Personalized Learning Path 🔮</h3>
-        <p id="finalMessage"></p>
-        <h4>🎯 Recommended Learning Resources:</h4>
-        <ul id="learningResources"></ul>
+    <!-- Question 2 -->
+    <div class="question">
+        <h3>Q2: How do you prefer to learn?</h3>
+        <label><input type="radio" name="q2" value="A"> Research & Studies</label>
+        <label><input type="radio" name="q2" value="B"> Watching Videos</label>
+        <label><input type="radio" name="q2" value="C"> Group Discussions</label>
+        <label><input type="radio" name="q2" value="D"> Hands-on Practice</label>
+        <label><input type="radio" name="q2" value="E"> Real-world Experience</label>
     </div>
+
+    <!-- Question 3 -->
+    <div class="question">
+        <h3>Q3: How do you want to be seen in the future?</h3>
+        <label><input type="radio" name="q3" value="A"> Innovator</label>
+        <label><input type="radio" name="q3" value="B"> Leader</label>
+        <label><input type="radio" name="q3" value="C"> Problem Solver</label>
+        <label><input type="radio" name="q3" value="D"> Executor</label>
+        <label><input type="radio" name="q3" value="E"> Connector</label>
+    </div>
+
+    <button onclick="findLearningPath()">See My Learning Path</button>
+
+    <div class="result" id="result"></div>
 
     <script>
+        // Learning Data
         const learningData = {
             "A-A-A": { message: "You are a Data Visionary! 📊", recommendations: ["Coursera: Data Science", "MIT OpenCourseWare AI", "StatQuest YouTube Channel"] },
-            "B-B-B": { message: "You are a Leadership Guru! 🏆", recommendations: ["Harvard Business Review", "The Tony Robbins Podcast", "TED Leadership Talks"] },
-            "C-C-C": { message: "You are a Creative Innovator! 🎨", recommendations: ["The Futur YouTube", "Creative Confidence Book", "99% Invisible Podcast"] },
-            "D-D-D": { message: "You are a Master Executor! 🔧", recommendations: ["Lean Startup Book", "PMP Certification", "Agile Training"] },
-            "E-E-E": { message: "You are a Global Connector! 🌎", recommendations: ["The Economist", "World Economic Forum", "Big Think YouTube"] }
+            "A-B-A": { message: "You are a Data Leader! 🏆", recommendations: ["Harvard Business Review", "Data Science Weekly", "The Tony Robbins Podcast"] },
+            "A-C-A": { message: "You are a Data-Driven Innovator! 🎨", recommendations: ["The Futur YouTube", "Creative Confidence Book", "Data Visualization Workshops"] },
+            "A-D-A": { message: "You are a Data Executor! 🔧", recommendations: ["Lean Startup Book", "SQL & Python Training", "Agile Data Analysis"] },
+            "A-E-A": { message: "You are a Global Data Strategist! 🌎", recommendations: ["The Economist", "Big Data Conferences", "AI Ethics Courses"] },
+            
+            "B-A-B": { message: "You are a Leadership Researcher! 🔍", recommendations: ["Harvard Business Review", "Leadership Case Studies", "MIT Sloan Management Review"] },
+            "B-B-B": { message: "You are a Leadership Guru! 🏆", recommendations: ["TED Leadership Talks", "Simon Sinek Books", "MasterClass: Leadership"] },
+            "B-C-B": { message: "You are a Leadership Communicator! 🎤", recommendations: ["Toastmasters", "The Tony Robbins Podcast", "Public Speaking Courses"] },
+            "B-D-B": { message: "You are a Hands-On Leader! 🛠️", recommendations: ["Project Management Certifications", "Agile Leadership", "Team Coaching Programs"] },
+            "B-E-B": { message: "You are a Global Leadership Connector! 🌍", recommendations: ["Cross-Cultural Leadership Courses", "World Economic Forum", "Networking Events"] },
+            
+            "C-A-C": { message: "You are a Research-Driven Creator! 🎨", recommendations: ["Design Thinking Workshops", "IDEO U Courses", "Behavioral Psychology Books"] },
+            "C-B-C": { message: "You are a Media-Savvy Creator! 🎥", recommendations: ["The Futur YouTube", "Storytelling for Business", "Marketing Strategy MasterClass"] },
+            "C-C-C": { message: "You are a Creative Innovator! 🌟", recommendations: ["99% Invisible Podcast", "Creative Confidence Book", "Adobe Creative Cloud Tutorials"] },
+            "C-D-C": { message: "You are an Experimental Innovator! 🏗️", recommendations: ["Rapid Prototyping", "Hackathons", "Lean UX Methods"] },
+            "C-E-C": { message: "You are a Global Creative Thinker! 🌍", recommendations: ["International Art & Design Conferences", "Cross-Cultural Branding Courses", "Global Advertising Strategies"] }
         };
 
-        function showResults() {
-            let q1 = document.getElementById("q1").value;
-            let q2 = document.getElementById("q2").value;
-            let q3 = document.getElementById("q3").value;
-            let key = `${q1}-${q2}-${q3}`;
+        // Function to Find Learning Path
+        function findLearningPath() {
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const q2 = document.querySelector('input[name="q2"]:checked');
+            const q3 = document.querySelector('input[name="q3"]:checked');
 
-            if (learningData[key]) {
-                document.getElementById("finalMessage").innerText = learningData[key].message;
-                let list = document.getElementById("learningResources");
-                list.innerHTML = "";
-                learningData[key].recommendations.forEach(item => {
-                    let li = document.createElement("li");
-                    li.innerText = item;
-                    list.appendChild(li);
-                });
-                document.getElementById("questionnaire").classList.add("hidden");
-                document.getElementById("result").classList.remove("hidden");
+            if (!q1 || !q2 || !q3) {
+                document.getElementById("result").innerHTML = "⚠️ Please answer all questions!";
+                return;
+            }
+
+            const key = `${q1.value}-${q2.value}-${q3.value}`;
+            const result = learningData[key];
+
+            if (result) {
+                document.getElementById("result").innerHTML = `
+                    <h2>${result.message}</h2>
+                    <p><strong>Recommended Learning:</strong></p>
+                    <ul>
+                        ${result.recommendations.map(item => `<li>${item}</li>`).join("")}
+                    </ul>
+                `;
             } else {
-                alert("No matching result found. Try different choices!");
+                document.getElementById("result").innerHTML = "No matching result found. Try different choices!";
             }
         }
     </script>
