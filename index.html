@@ -7,40 +7,45 @@
     <script>
         let learningData = {};  // This will store the JSON data
 
-        // Load JSON data on page load
+        // Load JSON data when the page loads
         async function loadLearningData() {
             try {
                 const response = await fetch('learning_recommendations.json');  // Adjust path if needed
+                if (!response.ok) {
+                    throw new Error("Failed to load JSON");
+                }
                 learningData = await response.json();
-                console.log("JSON Data Loaded:", learningData);
+                console.log("✅ JSON Data Loaded:", learningData);
             } catch (error) {
-                console.error("Error loading JSON:", error);
+                console.error("❌ Error loading JSON:", error);
             }
         }
 
         async function getLearningPath() {
+            // Ensure JSON is loaded before proceeding
             if (Object.keys(learningData).length === 0) {
-                await loadLearningData();  // Ensure JSON is loaded before proceeding
+                await loadLearningData();
             }
 
             const q1 = document.querySelector('input[name="q1"]:checked')?.value;
             const q2 = document.querySelector('input[name="q2"]:checked')?.value;
             const q3 = document.querySelector('input[name="q3"]:checked')?.value;
 
-            // Debugging to check selected values
-            console.log("Selected Answers:", q1, q2, q3);
+            console.log("📌 Selected Answers:", q1, q2, q3);
 
             if (!q1 || !q2 || !q3) {
-                document.getElementById("result").innerText = "Please answer all questions to get your learning path.";
+                document.getElementById("result").innerText = "⚠️ Please answer all questions to see your learning path.";
                 return;
             }
 
             const key = `${q1}-${q2}-${q3}`;  // Construct key (e.g., "A-A-A")
-            console.log("Generated Key:", key);
+            console.log("🔑 Generated Key:", key);
 
             if (learningData[key]) {
+                console.log("🎯 Found Matching Result:", learningData[key]);
                 document.getElementById("result").innerText = learningData[key].result;
             } else {
+                console.warn("❌ No Matching Result for Key:", key);
                 document.getElementById("result").innerText = "No matching result found. Try different choices!";
             }
         }
