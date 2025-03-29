@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Pathway Diagnosis</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; }
+        .hidden { display: none; }
+        button { margin-top: 10px; padding: 10px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h2>Find Your Best Learning Path! 🚀</h2>
+
+    <div id="questionnaire">
+        <p><strong>1. What kind of topics excite you the most?</strong></p>
+        <select id="q1">
+            <option value="A">Data & Analytics</option>
+            <option value="B">Leadership & Influence</option>
+            <option value="C">Creativity & Innovation</option>
+            <option value="D">Execution & Operations</option>
+            <option value="E">Global Thinking & Networking</option>
+        </select>
+
+        <p><strong>2. How do you prefer to learn?</strong></p>
+        <select id="q2">
+            <option value="A">Structured research (books, case studies)</option>
+            <option value="B">Watching videos & expert talks</option>
+            <option value="C">Discussions & interactive workshops</option>
+            <option value="D">Hands-on experience & real projects</option>
+            <option value="E">Observing trends & real-world exposure</option>
+        </select>
+
+        <p><strong>3. How do you want to be seen in the future?</strong></p>
+        <select id="q3">
+            <option value="A">A thought leader in data & tech</option>
+            <option value="B">An inspiring leader & decision-maker</option>
+            <option value="C">A creative innovator</option>
+            <option value="D">A master of execution</option>
+            <option value="E">A global connector & strategist</option>
+        </select>
+
+        <button onclick="showResults()">See My Learning Path</button>
+    </div>
+
+    <div id="result" class="hidden">
+        <h3>Your Personalized Learning Path 🔮</h3>
+        <p id="finalMessage"></p>
+        <h4>🎯 Recommended Learning Resources:</h4>
+        <ul id="learningResources"></ul>
+    </div>
+
+    <script>
+        const learningData = {
+            "A-A-A": { message: "You are a Data Visionary! 📊", recommendations: ["Coursera: Data Science", "MIT OpenCourseWare AI", "StatQuest YouTube Channel"] },
+            "B-B-B": { message: "You are a Leadership Guru! 🏆", recommendations: ["Harvard Business Review", "The Tony Robbins Podcast", "TED Leadership Talks"] },
+            "C-C-C": { message: "You are a Creative Innovator! 🎨", recommendations: ["The Futur YouTube", "Creative Confidence Book", "99% Invisible Podcast"] },
+            "D-D-D": { message: "You are a Master Executor! 🔧", recommendations: ["Lean Startup Book", "PMP Certification", "Agile Training"] },
+            "E-E-E": { message: "You are a Global Connector! 🌎", recommendations: ["The Economist", "World Economic Forum", "Big Think YouTube"] }
+        };
+
+        function showResults() {
+            let q1 = document.getElementById("q1").value;
+            let q2 = document.getElementById("q2").value;
+            let q3 = document.getElementById("q3").value;
+            let key = `${q1}-${q2}-${q3}`;
+
+            if (learningData[key]) {
+                document.getElementById("finalMessage").innerText = learningData[key].message;
+                let list = document.getElementById("learningResources");
+                list.innerHTML = "";
+                learningData[key].recommendations.forEach(item => {
+                    let li = document.createElement("li");
+                    li.innerText = item;
+                    list.appendChild(li);
+                });
+                document.getElementById("questionnaire").classList.add("hidden");
+                document.getElementById("result").classList.remove("hidden");
+            } else {
+                alert("No matching result found. Try different choices!");
+            }
+        }
+    </script>
+
+</body>
+</html>
