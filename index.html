@@ -53,17 +53,424 @@
 
 <script>
     let answers = ["", "", ""];  // Store user choices
+
+    // Define the learning data for all 125 possible combinations
     let learningData = {};
 
-    async function loadLearningData() {
-        try {
-            const response = await fetch('learning_recommendations.json'); // Load JSON
-            if (!response.ok) throw new Error("Failed to load JSON");
-            learningData = await response.json();
-            document.getElementById("debug").innerText = "✅ JSON Loaded: " + Object.keys(learningData).join(", ");
-        } catch (error) {
-            document.getElementById("debug").innerText = "❌ Error loading JSON: " + error.message;
-        }
+    function generateLearningData() {
+        const options = ['A', 'B', 'C', 'D', 'E'];
+        let index = 0;
+        {
+    "A-A-A": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "A-A-B": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "A-A-C": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "A-A-D": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "A-A-E": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "A-B-A": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "A-B-B": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "A-B-C": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "A-B-D": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "A-B-E": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "A-C-A": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "A-C-B": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "A-C-C": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "A-C-D": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "A-C-E": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "A-D-A": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "A-D-B": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "A-D-C": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "A-D-D": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "A-D-E": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "A-E-A": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "A-E-B": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "A-E-C": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "A-E-D": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "A-E-E": {
+        "message": "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "B-A-A": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "B-A-B": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "B-A-C": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "B-A-D": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "B-A-E": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "B-B-A": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "B-B-B": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "B-B-C": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "B-B-D": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "B-B-E": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "B-C-A": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "B-C-B": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "B-C-C": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "B-C-D": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "B-C-E": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "B-D-A": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "B-D-B": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "B-D-C": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "B-D-D": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "B-D-E": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "B-E-A": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "B-E-B": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "B-E-C": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "B-E-D": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "B-E-E": {
+        "message": "You have a passion for Leadership & Influence, focusing on People Management, Negotiation, Executive Decision-Making. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "C-A-A": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "C-A-B": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "C-A-C": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "C-A-D": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "C-A-E": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "C-B-A": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "C-B-B": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "C-B-C": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "C-B-D": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "C-B-E": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "C-C-A": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "C-C-B": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "C-C-C": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "C-C-D": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "C-C-E": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "C-D-A": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "C-D-B": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "C-D-C": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "C-D-D": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "C-D-E": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "C-E-A": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "C-E-B": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "C-E-C": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "C-E-D": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "C-E-E": {
+        "message": "You have a passion for Creativity & Innovation, focusing on Design Thinking, Storytelling, UX/UI. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "D-A-A": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "D-A-B": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "D-A-C": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "D-A-D": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "D-A-E": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "D-B-A": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "D-B-B": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "D-B-C": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "D-B-D": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "D-B-E": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "D-C-A": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "D-C-B": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "D-C-C": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "D-C-D": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "D-C-E": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "D-D-A": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "D-D-B": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "D-D-C": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "D-D-D": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "D-D-E": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "D-E-A": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "D-E-B": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "D-E-C": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "D-E-D": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "D-E-E": {
+        "message": "You have a passion for Execution & Operations, focusing on Project Management, Agile Methods, Process Optimization. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "E-A-A": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "E-A-B": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "E-A-C": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "E-A-D": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "E-A-E": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "E-B-A": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "E-B-B": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "E-B-C": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "E-B-D": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "E-B-E": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Observation, and the best resources for you include TED Talks, MasterClass, BBC Business Documentaries. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "E-C-A": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "E-C-B": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "E-C-C": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "E-C-D": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "E-C-E": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Discussions, and the best resources for you include Toastmasters, Clubhouse, LinkedIn Groups. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "E-D-A": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "E-D-B": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "E-D-C": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "E-D-D": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "E-D-E": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Hands-on Learning, and the best resources for you include Kaggle Competitions, NoCode Hackathons. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    },
+    "E-E-A": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!"
+    },
+    "E-E-B": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Inspire and lead organizations to success. Let's take the next step in your learning journey!"
+    },
+    "E-E-C": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Create new ideas, products, and solutions. Let's take the next step in your learning journey!"
+    },
+    "E-E-D": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Execute big visions and make things happen. Let's take the next step in your learning journey!"
+    },
+    "E-E-E": {
+        "message": "You have a passion for Global Thinking & Networking, focusing on Cross-cultural Leadership, International Business. Your preferred learning style is Real-world Exposure, and the best resources for you include SXSW, World Economic Forum, The Economist. In the future, you aspire to Connect people and drive change on a global scale. Let's take the next step in your learning journey!"
+    }
+}
+
+        
+        // Generate all combinations of A, B, C, D, E and add a unique message for each
+        options.forEach(q1 => {
+            options.forEach(q2 => {
+                options.forEach(q3 => {
+                    const key = `${q1}-${q2}-${q3}`;
+                    // Add custom messages for each combination
+                    learningData[key] = {
+                        message: `Based on your answers, you should focus on: 
+                                  ${q1 === 'A' ? 'Data analysis and insights' : ''}
+                                  ${q1 === 'B' ? 'Team leadership and decision-making' : ''}
+                                  ${q1 === 'C' ? 'Innovation and creative solutions' : ''}
+                                  ${q1 === 'D' ? 'Execution and efficiency' : ''}
+                                  ${q1 === 'E' ? 'Global business strategies' : ''}.
+                                  
+                                  Your analysis method: 
+                                  ${q2 === 'A' ? 'Case studies and reports' : ''}
+                                  ${q2 === 'B' ? 'Expert talks and documentaries' : ''}
+                                  ${q2 === 'C' ? 'Discussions and brainstorming' : ''}
+                                  ${q2 === 'D' ? 'Hands-on experimentation' : ''}
+                                  ${q2 === 'E' ? 'Networking and real-world exposure' : ''}.
+                                  
+                                  Your growth path: 
+                                  ${q3 === 'A' ? 'Becoming an expert in data-driven decision-making.' : ''}
+                                  ${q3 === 'B' ? 'Growing into a strong business leader.' : ''}
+                                  ${q3 === 'C' ? 'Driving creativity and innovation in your field.' : ''}
+                                  ${q3 === 'D' ? 'Mastering execution and operational excellence.' : ''}
+                                  ${q3 === 'E' ? 'Expanding your influence in global business.' : ''}`
+                    };
+                    index++;
+                });
+            });
+        });
     }
 
     function selectAnswer(questionNumber, choice) {
@@ -81,7 +488,8 @@
         }
     }
 
-    loadLearningData(); // Load JSON when the page loads
+    // Initialize learning data
+    generateLearningData();
 </script>
 
 </body>
