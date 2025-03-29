@@ -6,12 +6,13 @@
     <title>Learning Path Diagnosis</title>
     <script>
         const learningData = {
-            "A-A-A": { result: "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence. Your preferred learning style is Structured Research, and the best resources for you include Coursera, Harvard Business Review, The New York Times Business Section. In the future, you aspire to Shape the future with data and technology. Let's take the next step in your learning journey!" },
-            "A-B-A": { result: "You excel in Data & Leadership, combining AI-driven insights with strategic team management. Your learning preference is observing industry experts, with top resources like TED Talks, Data Science Weekly, and Harvard Business Review. Your goal is to influence decisions with data-driven leadership!" },
-            "B-A-B": { result: "Leadership is your core strength, with expertise in people management, negotiation, and decision-making. You prefer structured research, and top resources include Harvard Business Review, Leadership Case Studies, and MIT Sloan Management Review. Your future? A highly influential business leader!" },
-            "C-B-C": { result: "You are a creative strategist, mastering branding and storytelling. Watching expert talks fuels your growth, so The Futur, Marketing Strategy MasterClass, and storytelling workshops are your top picks. Your future? A brand-building visionary!" },
-            "D-D-D": { result: "Execution and efficiency are your strengths, specializing in agile methods and process optimization. You learn best through hands-on experience, so Project Management Certifications, Agile Coaching, and Six Sigma are ideal. Your future? A master of business execution and operations!" },
-            "E-E-E": { result: "You are a global strategist, navigating cross-cultural leadership and international business. Learning through global exposure, your best resources include The Economist, McKinsey Reports, and Geopolitical Strategy MasterClass. Your future is in bridging industries and cultures worldwide!" }
+            "A-A-A": { result: "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence..." },
+            "A-B-A": { result: "You excel in Data & Leadership, combining AI-driven insights with strategic team management..." },
+            "B-A-B": { result: "Leadership is your core strength, with expertise in people management, negotiation..." },
+            "C-B-C": { result: "You are a creative strategist, mastering branding and storytelling..." },
+            "D-D-D": { result: "Execution and efficiency are your strengths, specializing in agile methods..." },
+            "E-E-E": { result: "You are a global strategist, navigating cross-cultural leadership and international business..." }
+            // Make sure all 125 combinations are present
         };
 
         function getLearningPath() {
@@ -19,16 +20,19 @@
             const q2 = document.querySelector('input[name="q2"]:checked')?.value;
             const q3 = document.querySelector('input[name="q3"]:checked')?.value;
 
+            // Debugging
+            console.log("Selected Answers:", q1, q2, q3);
+
             if (!q1 || !q2 || !q3) {
                 document.getElementById("result").innerText = "Please answer all questions to get your learning path.";
                 return;
             }
 
             const key = `${q1}-${q2}-${q3}`;
-            const resultData = learningData[key];
+            console.log("Generated Key:", key);
 
-            if (resultData) {
-                document.getElementById("result").innerText = resultData.result;
+            if (learningData[key]) {
+                document.getElementById("result").innerText = learningData[key].result;
             } else {
                 document.getElementById("result").innerText = "No matching result found. Try different choices!";
             }
