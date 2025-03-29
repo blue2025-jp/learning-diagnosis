@@ -5,22 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learning Path Diagnosis</title>
     <script>
-        const learningData = {
-            "A-A-A": { result: "You have a passion for Data & Analytics, focusing on AI, Data Science, Business Intelligence..." },
-            "A-B-A": { result: "You excel in Data & Leadership, combining AI-driven insights with strategic team management..." },
-            "B-A-B": { result: "Leadership is your core strength, with expertise in people management, negotiation..." },
-            "C-B-C": { result: "You are a creative strategist, mastering branding and storytelling..." },
-            "D-D-D": { result: "Execution and efficiency are your strengths, specializing in agile methods..." },
-            "E-E-E": { result: "You are a global strategist, navigating cross-cultural leadership and international business..." }
-            // Make sure all 125 combinations are present
-        };
+        let learningData = {};  // This will store the JSON data
 
-        function getLearningPath() {
+        // Load JSON data on page load
+        async function loadLearningData() {
+            try {
+                const response = await fetch('learning_recommendations.json');  // Adjust path if needed
+                learningData = await response.json();
+                console.log("JSON Data Loaded:", learningData);
+            } catch (error) {
+                console.error("Error loading JSON:", error);
+            }
+        }
+
+        async function getLearningPath() {
+            if (Object.keys(learningData).length === 0) {
+                await loadLearningData();  // Ensure JSON is loaded before proceeding
+            }
+
             const q1 = document.querySelector('input[name="q1"]:checked')?.value;
             const q2 = document.querySelector('input[name="q2"]:checked')?.value;
             const q3 = document.querySelector('input[name="q3"]:checked')?.value;
 
-            // Debugging
+            // Debugging to check selected values
             console.log("Selected Answers:", q1, q2, q3);
 
             if (!q1 || !q2 || !q3) {
@@ -28,7 +35,7 @@
                 return;
             }
 
-            const key = `${q1}-${q2}-${q3}`;
+            const key = `${q1}-${q2}-${q3}`;  // Construct key (e.g., "A-A-A")
             console.log("Generated Key:", key);
 
             if (learningData[key]) {
@@ -37,6 +44,9 @@
                 document.getElementById("result").innerText = "No matching result found. Try different choices!";
             }
         }
+
+        // Load JSON when the page loads
+        window.onload = loadLearningData;
     </script>
 </head>
 <body>
