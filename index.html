@@ -5,90 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learning Path Diagnosis</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h1 { color: #333; }
-        .question { margin-bottom: 15px; }
-        button { padding: 10px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; }
-        button:hover { background-color: #0056b3; }
-        #result { margin-top: 20px; padding: 15px; border: 1px solid #ccc; display: none; }
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        select, button { margin: 10px; padding: 10px; font-size: 16px; }
+        #result { margin-top: 20px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <h1>Find Your Personalized Learning Path</h1>
+    <h2>Find Your Ideal Learning Path 🚀</h2>
 
-    <!-- Question 1 -->
-    <div class="question">
-        <p><strong>1. What learning topic interests you the most?</strong></p>
-        <label><input type="radio" name="q1" value="A"> Data & Analytics</label><br>
-        <label><input type="radio" name="q1" value="B"> Leadership & Management</label><br>
-        <label><input type="radio" name="q1" value="C"> Creativity & Innovation</label><br>
-        <label><input type="radio" name="q1" value="D"> Execution & Operations</label><br>
-        <label><input type="radio" name="q1" value="E"> Strategy & Global Thinking</label>
-    </div>
+    <label for="q1">Your company is expanding, and you need to develop expertise in a key area to drive growth. Which area excites you the most?</label>
+    <select id="q1">
+        <option value="A">Leveraging data and AI to make smarter business decisions and identify trends</option>
+        <option value="B">Leading teams, driving influence, and making high-impact strategic decisions</option>
+        <option value="C">Creating innovative solutions, compelling storytelling, and breakthrough ideas</option>
+        <option value="D">Optimizing processes, managing projects efficiently, and executing strategies</option>
+        <option value="E">Building global partnerships, navigating international markets, and scaling strategies</option>
+    </select>
 
-    <!-- Question 2 -->
-    <div class="question">
-        <p><strong>2. How do you prefer to learn?</strong></p>
-        <label><input type="radio" name="q2" value="A"> Research & Theory</label><br>
-        <label><input type="radio" name="q2" value="B"> Learning from Experts</label><br>
-        <label><input type="radio" name="q2" value="C"> Hands-on & Creative</label><br>
-        <label><input type="radio" name="q2" value="D"> Practical & Execution</label><br>
-        <label><input type="radio" name="q2" value="E"> Global & Cultural Insights</label>
-    </div>
+    <label for="q2">When tackling a new challenge, what approach do you naturally take?</label>
+    <select id="q2">
+        <option value="A">Deep diving into research, analyzing case studies, and extracting key insights</option>
+        <option value="B">Learning from industry experts through talks, interviews, and real-world examples</option>
+        <option value="C">Engaging in discussions, brainstorming with peers, and refining ideas collaboratively</option>
+        <option value="D">Getting hands-on, experimenting with different solutions, and learning by doing</option>
+        <option value="E">Attending industry events, networking with global leaders, and observing market trends</option>
+    </select>
 
-    <!-- Question 3 -->
-    <div class="question">
-        <p><strong>3. How do you want to be seen in the future?</strong></p>
-        <label><input type="radio" name="q3" value="A"> A Knowledge Expert</label><br>
-        <label><input type="radio" name="q3" value="B"> A Visionary Leader</label><br>
-        <label><input type="radio" name="q3" value="C"> A Creative Innovator</label><br>
-        <label><input type="radio" name="q3" value="D"> A Master Executor</label><br>
-        <label><input type="radio" name="q3" value="E"> A Global Strategist</label>
-    </div>
+    <label for="q3">Fast forward five years – you’re known as a leader in your field. What’s your reputation?</label>
+    <select id="q3">
+        <option value="A">A data-driven strategist shaping the future with AI and analytics</option>
+        <option value="B">A respected leader influencing teams and making high-stakes decisions</option>
+        <option value="C">A creative innovator known for groundbreaking ideas and visionary solutions</option>
+        <option value="D">A results-driven expert delivering major projects and transforming execution</option>
+        <option value="E">A global connector bridging industries, cultures, and markets for success</option>
+    </select>
 
     <button onclick="getLearningPath()">See My Learning Path</button>
 
-    <div id="result"></div>
+    <p id="result"></p>
 
     <script>
-        let learningData = {}; // Store JSON data
+        let learningData = {}; // To store JSON data
 
-        // Load JSON data dynamically
-        fetch("learning_recommendations.json")
+        // Load JSON data
+        fetch('learning_recommendations.json')
             .then(response => response.json())
-            .then(data => {
-                learningData = data;
-                console.log("JSON Data Loaded:", learningData); // Debugging
-            })
+            .then(data => { learningData = data; })
             .catch(error => console.error("Error loading JSON:", error));
 
         function getLearningPath() {
-            let q1 = document.querySelector('input[name="q1"]:checked')?.value;
-            let q2 = document.querySelector('input[name="q2"]:checked')?.value;
-            let q3 = document.querySelector('input[name="q3"]:checked')?.value;
+            const q1 = document.getElementById("q1").value;
+            const q2 = document.getElementById("q2").value;
+            const q3 = document.getElementById("q3").value;
+            const key = `${q1}-${q2}-${q3}`;
 
-            if (!q1 || !q2 || !q3) {
-                document.getElementById("result").innerHTML = "<p style='color: red;'>⚠️ Please answer all questions before proceeding.</p>";
-                document.getElementById("result").style.display = "block";
-                return;
-            }
-
-            let key = `${q1}-${q2}-${q3}`;
-            let result = learningData[key];
-
-            if (result) {
-                document.getElementById("result").innerHTML = `
-                    <h2>${result.message}</h2>
-                    <p><strong>Recommended Learning:</strong></p>
-                    <ul>
-                        ${result.recommendations.map(item => `<li>${item}</li>`).join("")}
-                    </ul>
-                `;
+            if (learningData[key]) {
+                document.getElementById("result").innerText = learningData[key].message;
             } else {
-                document.getElementById("result").innerHTML = "<p style='color: red;'>⚠️ No matching result found. Try different choices!</p>";
+                document.getElementById("result").innerText = "No matching result found. Try different choices!";
             }
-            document.getElementById("result").style.display = "block";
         }
     </script>
 
