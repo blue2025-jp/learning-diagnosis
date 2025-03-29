@@ -4,81 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learning Path Diagnosis</title>
-    <script>
-        let learningData = {};  // This will store the JSON data
-
-        // Load JSON data when the page loads
-        async function loadLearningData() {
-            try {
-                const response = await fetch('learning_recommendations.json');  // Adjust path if needed
-                if (!response.ok) {
-                    throw new Error("Failed to load JSON");
-                }
-                learningData = await response.json();
-                console.log("✅ JSON Data Loaded:", learningData);
-            } catch (error) {
-                console.error("❌ Error loading JSON:", error);
-            }
-        }
-
-        async function getLearningPath() {
-            // Ensure JSON is loaded before proceeding
-            if (Object.keys(learningData).length === 0) {
-                await loadLearningData();
-            }
-
-            const q1 = document.querySelector('input[name="q1"]:checked')?.value;
-            const q2 = document.querySelector('input[name="q2"]:checked')?.value;
-            const q3 = document.querySelector('input[name="q3"]:checked')?.value;
-
-            console.log("📌 Selected Answers:", q1, q2, q3);
-
-            if (!q1 || !q2 || !q3) {
-                document.getElementById("result").innerText = "⚠️ Please answer all questions to see your learning path.";
-                return;
-            }
-
-            const key = `${q1}-${q2}-${q3}`;  // Construct key (e.g., "A-A-A")
-            console.log("🔑 Generated Key:", key);
-
-            if (learningData[key]) {
-                console.log("🎯 Found Matching Result:", learningData[key]);
-                document.getElementById("result").innerText = learningData[key].result;
-            } else {
-                console.warn("❌ No Matching Result for Key:", key);
-                document.getElementById("result").innerText = "No matching result found. Try different choices!";
-            }
-        }
-
-        // Load JSON when the page loads
-        window.onload = loadLearningData;
-    </script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; }
+        .container { max-width: 600px; margin: auto; text-align: center; }
+        .question { font-weight: bold; margin: 20px 0; }
+        .options button { display: block; width: 100%; margin: 5px 0; padding: 10px; }
+        #result { font-size: 18px; font-weight: bold; margin-top: 20px; color: green; }
+        #debug { color: red; font-weight: bold; margin-top: 10px; }
+    </style>
 </head>
 <body>
-    <h1>🔮 Business Learning Path Diagnosis</h1>
 
-    <h3>1️⃣ Your company is expanding, and you need to develop expertise in a key area to drive growth. Which area excites you the most?</h3>
-    <label><input type="radio" name="q1" value="A"> Data & AI—using analytics to drive strategic decisions 📊</label><br>
-    <label><input type="radio" name="q1" value="B"> Leadership & Influence—guiding teams and shaping company vision 🏆</label><br>
-    <label><input type="radio" name="q1" value="C"> Creativity & Storytelling—building innovative branding and messaging 🎨</label><br>
-    <label><input type="radio" name="q1" value="D"> Project Execution—optimizing processes and improving efficiency 🔧</label><br>
-    <label><input type="radio" name="q1" value="E"> Global Strategy—scaling businesses and forming international partnerships 🌍</label><br>
+<div class="container">
+    <h2>📊 Learning Path Diagnosis</h2>
+    
+    <div id="question1" class="question">🔍 What challenges do you often face in decision-making?</div>
+    <div class="options">
+        <button onclick="selectAnswer(1, 'A')">📊 Understanding data-driven insights</button>
+        <button onclick="selectAnswer(1, 'B')">🏆 Leading teams and making leadership decisions</button>
+        <button onclick="selectAnswer(1, 'C')">🎨 Finding innovative solutions</button>
+        <button onclick="selectAnswer(1, 'D')">🔧 Managing execution and efficiency</button>
+        <button onclick="selectAnswer(1, 'E')">🌍 Navigating global business strategies</button>
+    </div>
 
-    <h3>2️⃣ When learning a new skill, which method works best for you?</h3>
-    <label><input type="radio" name="q2" value="A"> Reading research papers, case studies, and in-depth reports 📚</label><br>
-    <label><input type="radio" name="q2" value="B"> Watching expert talks, interviews, and documentaries 🎥</label><br>
-    <label><input type="radio" name="q2" value="C"> Engaging in discussions, brainstorming, and interactive collaboration 🗣️</label><br>
-    <label><input type="radio" name="q2" value="D"> Hands-on experimentation, prototyping, and real-world practice 🛠️</label><br>
-    <label><input type="radio" name="q2" value="E"> Attending industry events, networking, and learning from real-life exposure 🌍</label><br>
+    <div id="question2" class="question">📚 How do you prefer to analyze problems?</div>
+    <div class="options">
+        <button onclick="selectAnswer(2, 'A')">📖 Reading case studies and reports</button>
+        <button onclick="selectAnswer(2, 'B')">🎥 Learning from expert talks and documentaries</button>
+        <button onclick="selectAnswer(2, 'C')">🗣️ Engaging in discussions and brainstorming</button>
+        <button onclick="selectAnswer(2, 'D')">🛠️ Hands-on experimentation and prototyping</button>
+        <button onclick="selectAnswer(2, 'E')">🌍 Networking and real-world exposure</button>
+    </div>
 
-    <h3>3️⃣ Fast forward five years—what reputation do you want to build?</h3>
-    <label><input type="radio" name="q3" value="A"> A data-driven strategist shaping the future with analytics and AI 🚀</label><br>
-    <label><input type="radio" name="q3" value="B"> A respected leader inspiring teams and making bold decisions 🏅</label><br>
-    <label><input type="radio" name="q3" value="C"> A creative innovator crafting impactful stories and brand visions 🌟</label><br>
-    <label><input type="radio" name="q3" value="D"> A project execution expert delivering results with precision ⚙️</label><br>
-    <label><input type="radio" name="q3" value="E"> A global business strategist bridging industries and cultures 🌍</label><br>
+    <div id="question3" class="question">🚀 How do you envision your professional growth?</div>
+    <div class="options">
+        <button onclick="selectAnswer(3, 'A')">📊 Becoming an expert in data-driven decision-making</button>
+        <button onclick="selectAnswer(3, 'B')">🏅 Growing into a strong business leader</button>
+        <button onclick="selectAnswer(3, 'C')">🌟 Driving creativity and innovation in your field</button>
+        <button onclick="selectAnswer(3, 'D')">⚙️ Mastering execution and operational excellence</button>
+        <button onclick="selectAnswer(3, 'E')">🌍 Expanding your influence in global business</button>
+    </div>
 
-    <button onclick="getLearningPath()">See My Learning Path</button>
-    <h2 id="result"></h2>
+    <button onclick="showResult()">🚀 See My Learning Path</button>
+
+    <div id="result"></div>
+    <div id="debug"></div> <!-- JSON Debugging Message -->
+</div>
+
+<script>
+    let answers = ["", "", ""];  // Store user choices
+    let learningData = {};
+
+    async function loadLearningData() {
+        try {
+            const response = await fetch('learning_recommendations.json'); // Load JSON
+            if (!response.ok) throw new Error("Failed to load JSON");
+            learningData = await response.json();
+            document.getElementById("debug").innerText = "✅ JSON Loaded: " + Object.keys(learningData).join(", ");
+        } catch (error) {
+            document.getElementById("debug").innerText = "❌ Error loading JSON: " + error.message;
+        }
+    }
+
+    function selectAnswer(questionNumber, choice) {
+        answers[questionNumber - 1] = choice;
+    }
+
+    function showResult() {
+        const key = answers.join("-"); // Create key like "A-B-C"
+        const resultDiv = document.getElementById("result");
+
+        if (learningData[key]) {
+            resultDiv.innerText = learningData[key].message;
+        } else {
+            resultDiv.innerText = "❌ No matching result found. Try different choices!";
+        }
+    }
+
+    loadLearningData(); // Load JSON when the page loads
+</script>
+
 </body>
 </html>
